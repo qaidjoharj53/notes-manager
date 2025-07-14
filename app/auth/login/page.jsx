@@ -14,7 +14,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
 	const [formData, setFormData] = useState({
@@ -23,6 +23,7 @@ export default function LoginPage() {
 	});
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 
 	const handleSubmit = async (e) => {
@@ -77,19 +78,11 @@ export default function LoginPage() {
 				</CardHeader>
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-6">
-						{error && (
-							<Alert
-								variant="destructive"
-								className="animate-fade-in">
-								<AlertDescription>{error}</AlertDescription>
-							</Alert>
-						)}
-
 						<div className="space-y-2">
 							<Label
 								htmlFor="username"
 								className="text-slate-700">
-								Username
+								Username or Email
 							</Label>
 							<Input
 								id="username"
@@ -98,7 +91,7 @@ export default function LoginPage() {
 								required
 								value={formData.username}
 								onChange={handleChange}
-								placeholder="Enter your username"
+								placeholder="Enter your username or email"
 								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
 							/>
 						</div>
@@ -109,17 +102,39 @@ export default function LoginPage() {
 								className="text-slate-700">
 								Password
 							</Label>
-							<Input
-								id="password"
-								name="password"
-								type="password"
-								required
-								value={formData.password}
-								onChange={handleChange}
-								placeholder="Enter your password"
-								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
-							/>
+							<div className="relative">
+								<Input
+									id="password"
+									name="password"
+									type={showPassword ? "text" : "password"}
+									required
+									value={formData.password}
+									onChange={handleChange}
+									placeholder="Enter your password"
+									className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20 pr-10"
+								/>
+								<button
+									type="button"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+									{showPassword ? (
+										<EyeOff className="h-4 w-4" />
+									) : (
+										<Eye className="h-4 w-4" />
+									)}
+								</button>
+							</div>
 						</div>
+
+						{error && (
+							<Alert
+								variant="destructive"
+								className="animate-fade-in">
+								<AlertDescription>{error}</AlertDescription>
+							</Alert>
+						)}
 
 						<Button
 							type="submit"

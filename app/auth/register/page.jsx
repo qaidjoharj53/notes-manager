@@ -14,7 +14,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { UserPlus } from "lucide-react";
+import { UserPlus, Eye, EyeOff } from "lucide-react";
 
 export default function RegisterPage() {
 	const [formData, setFormData] = useState({
@@ -25,6 +25,8 @@ export default function RegisterPage() {
 	});
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const router = useRouter();
 
 	const handleSubmit = async (e) => {
@@ -89,13 +91,21 @@ export default function RegisterPage() {
 				</CardHeader>
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-6">
-						{error && (
-							<Alert
-								variant="destructive"
-								className="animate-fade-in">
-								<AlertDescription>{error}</AlertDescription>
-							</Alert>
-						)}
+						<div className="space-y-2">
+							<Label htmlFor="email" className="text-slate-700">
+								Email
+							</Label>
+							<Input
+								id="email"
+								name="email"
+								type="email"
+								required
+								value={formData.email}
+								onChange={handleChange}
+								placeholder="Enter your email"
+								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
+							/>
+						</div>
 
 						<div className="space-y-2">
 							<Label
@@ -116,37 +126,35 @@ export default function RegisterPage() {
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="email" className="text-slate-700">
-								Email
-							</Label>
-							<Input
-								id="email"
-								name="email"
-								type="email"
-								required
-								value={formData.email}
-								onChange={handleChange}
-								placeholder="Enter your email"
-								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
-							/>
-						</div>
-
-						<div className="space-y-2">
 							<Label
 								htmlFor="password"
 								className="text-slate-700">
 								Password
 							</Label>
-							<Input
-								id="password"
-								name="password"
-								type="password"
-								required
-								value={formData.password}
-								onChange={handleChange}
-								placeholder="Create a password"
-								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
-							/>
+							<div className="relative">
+								<Input
+									id="password"
+									name="password"
+									type={showPassword ? "text" : "password"}
+									required
+									value={formData.password}
+									onChange={handleChange}
+									placeholder="Create a password"
+									className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20 pr-10"
+								/>
+								<button
+									type="button"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+									{showPassword ? (
+										<EyeOff className="h-4 w-4" />
+									) : (
+										<Eye className="h-4 w-4" />
+									)}
+								</button>
+							</div>
 						</div>
 
 						<div className="space-y-2">
@@ -155,17 +163,45 @@ export default function RegisterPage() {
 								className="text-slate-700">
 								Confirm Password
 							</Label>
-							<Input
-								id="confirmPassword"
-								name="confirmPassword"
-								type="password"
-								required
-								value={formData.confirmPassword}
-								onChange={handleChange}
-								placeholder="Confirm your password"
-								className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20"
-							/>
+							<div className="relative">
+								<Input
+									id="confirmPassword"
+									name="confirmPassword"
+									type={
+										showConfirmPassword
+											? "text"
+											: "password"
+									}
+									required
+									value={formData.confirmPassword}
+									onChange={handleChange}
+									placeholder="Confirm your password"
+									className="h-11 text-base border-slate-200 focus:border-blue-400 focus:ring-blue-400/20 pr-10"
+								/>
+								<button
+									type="button"
+									onClick={() =>
+										setShowConfirmPassword(
+											!showConfirmPassword
+										)
+									}
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+									{showConfirmPassword ? (
+										<EyeOff className="h-4 w-4" />
+									) : (
+										<Eye className="h-4 w-4" />
+									)}
+								</button>
+							</div>
 						</div>
+
+						{error && (
+							<Alert
+								variant="destructive"
+								className="animate-fade-in">
+								<AlertDescription>{error}</AlertDescription>
+							</Alert>
+						)}
 
 						<Button
 							type="submit"
