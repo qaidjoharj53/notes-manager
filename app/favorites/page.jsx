@@ -367,7 +367,7 @@ export default function FavoritesPage() {
 											(item, index) => (
 												<Card
 													key={`bookmark-${item._id}`}
-													className="glass-effect shadow-soft border-0 card-hover animate-scale-in"
+													className="glass-effect shadow-soft border-0 card-hover animate-scale-in hover:shadow-lg transform hover:scale-105 transition-shadow-transform duration-300"
 													style={{
 														animationDelay: `${
 															index * 50
